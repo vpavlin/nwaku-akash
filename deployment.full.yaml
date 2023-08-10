@@ -34,9 +34,10 @@ services:
         to:
           - global: true
             ip: nodeendpoint
-    storage:
-      data:
-        mount: /etc/letsencrypt
+    params:
+      storage:
+        data:
+          mount: /etc/letsencrypt
     env:
       - DOMAIN=my.example.com
     args:
@@ -79,7 +80,7 @@ profiles:
             size: 100Mi
             attributes:
               persistent: true
-              class: beta2
+              class: beta3
   placement:
     westcoast:
       attributes:
