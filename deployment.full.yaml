@@ -1,0 +1,92 @@
+---
+version: "2.0"
+
+endpoints: 
+  nodeendpoint:
+    kind: ip
+
+services:
+  node:
+    image: quay.io/vpavlin0/wakash
+    expose:
+      - port: 60000
+        as: 60000
+        proto: tcp
+        to:
+          - global: true
+            ip: nodeendpoint
+
+      - port: 8003
+        as: 8003
+        proto: tcp
+        to:
+          - global: true
+            ip: nodeendpoint
+
+      - port: 9005
+        proto: udp
+        to:
+          - global: true
+            ip: nodeendpoint
+
+      - port: 80
+        as: 80
+        to:
+          - global: true
+            ip: nodeendpoint
+    env:
+      - DOMAIN=my.example.com
+    args:
+      - --relay=true
+      - --filter=true
+      - --lightpush=true
+      - --topic=/waku/2/default-waku/proto
+      - --topic=/waku/2/dev-waku/proto
+      - --keep-alive=true
+      - --peer-exchange=true
+      - --max-connections=50
+      - --dns-discovery=true
+      - --dns-discovery-url=enrtree://AOGECG2SPND25EEFMAJ5WF3KSGJNSGV356DSTL2YVLLZWIV6SAYBM@prod.waku.nodes.status.im
+      - --discv5-discovery=true
+      - --discv5-udp-port=9005
+      - --discv5-enr-auto-update=True
+      - --log-level=DEBUG
+      - --metrics-server=True
+      - --metrics-server-port=8003
+      - --metrics-server-address=0.0.0.0
+      - --store=true
+      - --store-message-db-url=sqlite:///data/store.sqlite3
+      - --store-message-retention-policy=time:2592000
+      - --dn4-domain-name=${DOMAIN}
+      - --websocket-support=true
+      - --websocket-secure-support=true
+     # - --nat:extip:${MY_IP}
+
+profiles:
+  compute:
+    node:
+      resources:
+        cpu:
+          units: 0.1
+        memory:
+          size: 512Mi
+        storage:
+          size: 512Mi
+  placement:
+    westcoast:
+      attributes:
+        host: akash
+      signedBy:
+        anyOf:
+          - "akash1365yvmc4s7awdyj3n2sav7xfx76adc6dnmlx63"
+      pricing:
+        node: 
+          denom: uakt
+          amount: 1000
+
+deployment:
+  node:
+    westcoast:
+      profile: node
+      count: 1
+
