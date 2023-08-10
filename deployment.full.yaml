@@ -61,7 +61,7 @@ services:
       - --store=true
       - --store-message-db-url=sqlite:///data/store.sqlite3
       - --store-message-retention-policy=time:2592000
-      - --dn4-domain-name=${DOMAIN}
+#      - --dn4-domain-name=${DOMAIN}
       - --websocket-support=true
       - --websocket-secure-support=true
      # - --nat:extip:${MY_IP}
