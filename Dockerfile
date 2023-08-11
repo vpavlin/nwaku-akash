@@ -1,4 +1,4 @@
-FROM statusteam/nim-waku:v0.19.0-rc.0
+FROM statusteam/nim-waku:v0.19.0-rc.1
 
 RUN apk add --no-cache certbot
 

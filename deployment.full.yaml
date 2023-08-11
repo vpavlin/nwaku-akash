@@ -2,44 +2,51 @@
 version: "2.0"
 
 endpoints: 
-  nodeendpoint:
+  nodeendpoint123:
     kind: ip
 
 services:
   node:
-    image: quay.io/vpavlin0/wakash
+    image: quay.io/vpavlin0/wakash:6
     expose:
       - port: 60000
         as: 60000
         proto: tcp
         to:
           - global: true
-            ip: nodeendpoint
+            ip: nodeendpoint123
 
       - port: 8003
         as: 8003
         proto: tcp
         to:
           - global: true
-            ip: nodeendpoint
+            ip: nodeendpoint123
 
       - port: 9005
         proto: udp
         to:
           - global: true
-            ip: nodeendpoint
+            ip: nodeendpoint123
+
+      - port: 8000
+        as: 8000
+        proto: tcp
+        to:
+          - global: true
+            ip: nodeendpoint123
 
       - port: 80
         as: 80
         to:
           - global: true
-            ip: nodeendpoint
+            ip: nodeendpoint123
     params:
       storage:
-        data:
+        certs:
           mount: /etc/letsencrypt
     env:
-      - DOMAIN=my.example.com
+      - DOMAIN=
     args:
       - --relay=true
       - --filter=true
@@ -48,7 +55,7 @@ services:
       - --topic=/waku/2/dev-waku/proto
       - --keep-alive=true
       - --peer-exchange=true
-      - --max-connections=50
+      - --max-connections=150
       - --dns-discovery=true
       - --dns-discovery-url=enrtree://AOGECG2SPND25EEFMAJ5WF3KSGJNSGV356DSTL2YVLLZWIV6SAYBM@prod.waku.nodes.status.im
       - --discv5-discovery=true
@@ -59,7 +66,7 @@ services:
       - --metrics-server-port=8003
       - --metrics-server-address=0.0.0.0
       - --store=true
-      - --store-message-db-url=sqlite:///data/store.sqlite3
+      - --store-message-db-url=sqlite:///etc/letsencrypt/waku-store.sqlite3 #this is terrible FIXME!
       - --store-message-retention-policy=time:2592000
 #      - --dn4-domain-name=${DOMAIN}
       - --websocket-support=true
@@ -76,11 +83,13 @@ profiles:
           size: 1Gi
         storage:
           - size: 1Gi
-          - name: data
-            size: 100Mi
+          - name: certs
+            size: 5Gi
             attributes:
               persistent: true
               class: beta3
+
+
   placement:
     westcoast:
       attributes:
@@ -88,10 +97,11 @@ profiles:
       signedBy:
         anyOf:
           - "akash1365yvmc4s7awdyj3n2sav7xfx76adc6dnmlx63"
+          - "akash18qa2a2ltfyvkyj0ggj3hkvuj6twzyumuaru9s4"
       pricing:
         node: 
           denom: uakt
-          amount: 1000
+          amount: 100000
 
 deployment:
   node:
