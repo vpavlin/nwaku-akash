@@ -7,7 +7,7 @@ endpoints:
 
 services:
   node:
-    image: quay.io/vpavlin0/wakash:7023f48
+    image: quay.io/vpavlin0/wakash:9437f9a
     expose:
       - port: 60000
         as: 60000
@@ -48,6 +48,7 @@ services:
     env:
       - DOMAIN=
       - NODEKEY=
+      - IP_ADDR=
     args:
       - --relay=true
       - --filter=true
@@ -68,10 +69,6 @@ services:
       - --metrics-server-address=0.0.0.0
       - --store=true
       - --store-message-retention-policy=time:2592000
-#     - --dn4-domain-name=${DOMAIN}
-      - --websocket-support=true
-      - --websocket-secure-support=true
-     # - --nat=extip:${MY_IP}
 
 profiles:
   compute:

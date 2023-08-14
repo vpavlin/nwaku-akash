@@ -49,6 +49,7 @@ services:
           mount: /etc/letsencrypt
     env:
       - DOMAIN=
+      - IP_ADDR=
       - NODEKEY=
       - POSTGRES_USER=waku
       - "POSTGRES_PASSWORD=secretpassword"
@@ -71,12 +72,8 @@ services:
       - --metrics-server-port=8003
       - --metrics-server-address=0.0.0.0
       - --store=true
-#      - --store-message-db-url="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/waku"\
       - --store-message-retention-policy=time:2592000
-#      - --dn4-domain-name=${DOMAIN}
-      - --websocket-support=true
-      - --websocket-secure-support=true
-     # - --nat=extip:${MY_IP}
+
   postgres:
     image: postgres 
     expose:
