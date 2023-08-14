@@ -7,7 +7,7 @@ endpoints:
 
 services:
   node:
-    image: quay.io/vpavlin0/wakash:abb5887
+    image: quay.io/vpavlin0/wakash:db3eca7
     expose:
       - port: 60000
         as: 60000
@@ -51,8 +51,8 @@ services:
       - --relay=true
       - --filter=true
       - --lightpush=true
-      - --topic=/waku/2/default-waku/proto
-      - --topic=/waku/2/dev-waku/proto
+      - --pubsub-topic=/waku/2/default-waku/proto
+      - --pubsub-topic=/waku/2/dev-waku/proto
       - --keep-alive=true
       - --peer-exchange=true
       - --max-connections=150

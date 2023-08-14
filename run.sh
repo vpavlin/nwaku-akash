@@ -29,13 +29,13 @@ if ! [ -e "${LETSENCRYPT_PATH}/privkey.pem" ]; then
     exit 1
 fi
 
-if [ -n "${NODEKEY}" ]; then
+if [ "${NODEKEY}" != "" ]; then
     NODEKEY=--nodekey=${NODEKEY}
 fi
 
-STORE_DB_URL=--store-message-db-url=sqlite:///etc/letsencrypt/waku-store.sqlite3
+STORE_DB_URL=--store-message-db-url=sqlite:///etc/letsencrypt/wakustore.sqlite3
 
-if [ -n "${POSTGRES_PASSWORD}" ]; then
+if [ "${POSTGRES_PASSWORD}" != "" ]; then
     STORE_DB_URL="--store-message-db-url=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/waku"
 
 fi
