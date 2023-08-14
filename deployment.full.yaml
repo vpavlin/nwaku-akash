@@ -66,7 +66,6 @@ services:
       - --metrics-server-port=8003
       - --metrics-server-address=0.0.0.0
       - --store=true
-      - --store-message-db-url=sqlite:///etc/letsencrypt/waku-store.sqlite3 #this is terrible FIXME!
       - --store-message-retention-policy=time:2592000
 #     - --dn4-domain-name=${DOMAIN}
       - --websocket-support=true

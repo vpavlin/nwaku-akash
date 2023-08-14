@@ -29,8 +29,20 @@ if ! [ -e "${LETSENCRYPT_PATH}/privkey.pem" ]; then
     exit 1
 fi
 
+if [ -n "${NODEKEY}" ]; then
+    NODEKEY=--nodekey=${NODEKEY}
+fi
+
+STORE_DB_URL=--store-message-db-url=sqlite:///etc/letsencrypt/waku-store.sqlite3
+
+if [ -n "${POSTGRES_PASSWORD}" ]; then
+    STORE_DB_URL="--store-message-db-url=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/waku"
+
+fi
+
 exec "/usr/bin/wakunode" $@ \
     "--websocket-secure-key-path=${LETSENCRYPT_PATH}/privkey.pem"\
     "--websocket-secure-cert-path=${LETSENCRYPT_PATH}/cert.pem"\
     "--dns4-domain-name=${DOMAIN}"\
-    "--store-message-db-url=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/waku"
+    "${STORE_DB_URL}"\
+    "${NODEKEY}"
