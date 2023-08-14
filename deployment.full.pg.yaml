@@ -8,6 +8,8 @@ endpoints:
 services:
   node:
     image: quay.io/vpavlin0/wakash:6
+    depends_on:
+      - postgres
     expose:
       - port: 60000
         as: 60000
@@ -47,6 +49,8 @@ services:
           mount: /etc/letsencrypt
     env:
       - DOMAIN=
+      - POSTGRES_USER=waku
+      - POSTGRES_PASSWORD=@secret#password@
     args:
       - --relay=true
       - --filter=true
@@ -66,15 +70,36 @@ services:
       - --metrics-server-port=8003
       - --metrics-server-address=0.0.0.0
       - --store=true
-      - --store-message-db-url=sqlite:///etc/letsencrypt/waku-store.sqlite3 #this is terrible FIXME!
+#      - --store-message-db-url="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/waku"\
       - --store-message-retention-policy=time:2592000
-#     - --dn4-domain-name=${DOMAIN}
+#      - --dn4-domain-name=${DOMAIN}
       - --websocket-support=true
       - --websocket-secure-support=true
-     # - --nat=extip:${MY_IP}
-
+     # - --nat:extip:${MY_IP}
+  postgres:
+    image: postgres 
+    expose:
+      - port: 5432
+        to:
+          - service: node
+    env:
+      - POSTGRES_USER=waku
+      - POSTGRES_PASSWORD=@secret#password@
+      - POSTGRES_DB=waku
 profiles:
   compute:
+    postgres:
+      resources:
+        cpu:
+          units: 0.5
+        memory:
+          size: 1Gi
+        storage:
+          - name: data
+            size: 5Gi
+            attributes:
+              persistent: true
+              class: beta3
     node:
       resources:
         cpu:
@@ -82,9 +107,8 @@ profiles:
         memory:
           size: 1Gi
         storage:
-          - size: 1Gi
           - name: certs
-            size: 5Gi
+            size: 100Mi
             attributes:
               persistent: true
               class: beta3
@@ -99,11 +123,18 @@ profiles:
           - "akash1365yvmc4s7awdyj3n2sav7xfx76adc6dnmlx63"
           - "akash18qa2a2ltfyvkyj0ggj3hkvuj6twzyumuaru9s4"
       pricing:
+        postgres:
+          denom: uakt
+          amount: 100000
         node: 
           denom: uakt
           amount: 100000
 
 deployment:
+  db:
+    westcoast:
+      profile: postgres
+      count: 1 
   node:
     westcoast:
       profile: node
