@@ -7,7 +7,7 @@ endpoints:
 
 services:
   node:
-    image: quay.io/vpavlin0/wakash:e6cfb6e
+    image: quay.io/vpavlin0/wakash:abb5887
     depends_on:
       - postgres
     expose:
@@ -50,7 +50,7 @@ services:
     env:
       - DOMAIN=
       - POSTGRES_USER=waku
-      - "POSTGRES_PASSWORD=secret#*password"
+      - "POSTGRES_PASSWORD=secretpassword"
     args:
       - --relay=true
       - --filter=true
@@ -88,7 +88,7 @@ services:
               mount: /var/lib/postgresql/
     env:
       - POSTGRES_USER=waku
-      - "POSTGRES_PASSWORD=secret#*password"
+      - "POSTGRES_PASSWORD=secretpassword"
       - POSTGRES_DB=waku
 profiles:
   compute:
