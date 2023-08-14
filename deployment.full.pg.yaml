@@ -50,7 +50,7 @@ services:
     env:
       - DOMAIN=
       - POSTGRES_USER=waku
-      - "POSTGRES_PASSWORD=@secret#password@"
+      - "POSTGRES_PASSWORD=secret#*password"
     args:
       - --relay=true
       - --filter=true
@@ -88,7 +88,7 @@ services:
               mount: /var/lib/postgresql/
     env:
       - POSTGRES_USER=waku
-      - "POSTGRES_PASSWORD=@secret#password@"
+      - "POSTGRES_PASSWORD=secret#*password"
       - POSTGRES_DB=waku
 profiles:
   compute:
