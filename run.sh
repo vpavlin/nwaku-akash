@@ -31,4 +31,4 @@ exec "/usr/bin/wakunode" $@ \
     "--websocket-secure-key-path=${LETSENCRYPT_PATH}/privkey.pem"\
     "--websocket-secure-cert-path=${LETSENCRYPT_PATH}/cert.pem"\
     "--dns4-domain-name=${DOMAIN}"\
-    "--store-message-db-url="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/waku"
+    "--store-message-db-url='postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/waku'"

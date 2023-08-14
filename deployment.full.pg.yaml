@@ -2,12 +2,12 @@
 version: "2.0"
 
 endpoints: 
-  nodeendpoint123:
+  nodeendpoint-pg:
     kind: ip
 
 services:
   node:
-    image: quay.io/vpavlin0/wakash:6
+    image: quay.io/vpavlin0/wakash:e6cfb6e
     depends_on:
       - postgres
     expose:
@@ -16,33 +16,33 @@ services:
         proto: tcp
         to:
           - global: true
-            ip: nodeendpoint123
+            ip: nodeendpoint-pg
 
       - port: 8003
         as: 8003
         proto: tcp
         to:
           - global: true
-            ip: nodeendpoint123
+            ip: nodeendpoint-pg
 
       - port: 9005
         proto: udp
         to:
           - global: true
-            ip: nodeendpoint123
+            ip: nodeendpoint-pg
 
       - port: 8000
         as: 8000
         proto: tcp
         to:
           - global: true
-            ip: nodeendpoint123
+            ip: nodeendpoint-pg
 
       - port: 80
         as: 80
         to:
           - global: true
-            ip: nodeendpoint123
+            ip: nodeendpoint-pg
     params:
       storage:
         certs:
@@ -50,7 +50,7 @@ services:
     env:
       - DOMAIN=
       - POSTGRES_USER=waku
-      - POSTGRES_PASSWORD=@secret#password@
+      - "POSTGRES_PASSWORD=@secret#password@"
     args:
       - --relay=true
       - --filter=true
@@ -75,16 +75,20 @@ services:
 #      - --dn4-domain-name=${DOMAIN}
       - --websocket-support=true
       - --websocket-secure-support=true
-     # - --nat:extip:${MY_IP}
+     # - --nat=extip:${MY_IP}
   postgres:
     image: postgres 
     expose:
       - port: 5432
         to:
           - service: node
+    params:
+      storage:
+          data:
+              mount: /var/lib/postgresql/
     env:
       - POSTGRES_USER=waku
-      - POSTGRES_PASSWORD=@secret#password@
+      - "POSTGRES_PASSWORD=@secret#password@"
       - POSTGRES_DB=waku
 profiles:
   compute:
@@ -131,7 +135,7 @@ profiles:
           amount: 100000
 
 deployment:
-  db:
+  postgres:
     westcoast:
       profile: postgres
       count: 1 
