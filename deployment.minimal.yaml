@@ -43,7 +43,7 @@ services:
       - --metrics-server=True
       - --metrics-server-port=8003
       - --metrics-server-address=0.0.0.0
-#      - --nat:extip:{MY_IP}
+#      - --nat=extip:{MY_IP}
 
 profiles:
   compute:
