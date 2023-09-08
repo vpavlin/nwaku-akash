@@ -1,6 +1,8 @@
-FROM statusteam/nim-waku:v0.19.0
+FROM quay.io/wakuorg/nwaku-pr:1fb13b0
 
-RUN apk add --no-cache certbot
+RUN apt-get update &&\
+    apt-get install -y certbot &&\
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY ./run.sh /opt/run.sh
 RUN chmod +x /opt/run.sh
