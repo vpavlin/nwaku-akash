@@ -4,9 +4,7 @@ set -xe
 
 date
 if [ -z "${IP_ADDR}" ]; then
-    echo "You must provide the nodes public IP address"
-    sleep 120
-    exit 1
+    IP_ADDR=$(wget -qO- https://api4.ipify.org)
 fi
 
 DNS_WSS_CMD=
@@ -50,7 +48,23 @@ if [ "${POSTGRES_PASSWORD}" != "" ]; then
     STORE_DB_URL="--store-message-db-url=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/waku"
 fi
 
+RLN_RELAY_CRED_PATH=${RLN_RELAY_CRED_PATH:-/keystore/keystore.json}
+
+if [ -n "${RLN_RELAY_CRED_BASE64}" ]; then
+    echo ${RLN_RELAY_CRED_BASE64} | base64 -d > ${RLN_RELAY_CRED_PATH}
+fi
+
+RLN_RELAY_CRED_PATH=--rln-relay-cred-path=${RLN_RELAY_CRED_PATH}
+
+if [ -n "${RLN_RELAY_CRED_PASSWORD}" ]; then
+    RLN_RELAY_CRED_PASSWORD=--rln-relay-cred-password="${RLN_RELAY_CRED_PASSWORD}"
+fi
+
 exec "/usr/bin/wakunode" $@ ${DNS_WSS_CMD}\
     ${STORE_DB_URL}\
     ${NODEKEY}\
+    ${RLN_RELAY_CRED_PATH}\
+    ${RLN_RELAY_CRED_PASSWORD}\
+    --rln-relay-eth-client-address="${ETH_CLIENT_ADDRESS}"\
+    --rln-relay-tree-path="/etc/rln_tree"\
     --nat=extip:${IP_ADDR}
