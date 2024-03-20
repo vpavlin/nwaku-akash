@@ -7,7 +7,7 @@ endpoints:
 
 services:
   node:
-    image: quay.io/vpavlin0/wakash:8352f0e
+    image: quay.io/vpavlin0/wakash:f3448cf
     depends_on:
       - postgres
     expose:
@@ -51,6 +51,9 @@ services:
       - DOMAIN=
       - IP_ADDR=
       - NODEKEY=
+      - ETH_CLIENT_ADDRESS=
+      - RLN_RELAY_CRED_PATH=
+      - RLN_RELAY_CRED_PASSWORD=
       - POSTGRES_USER=waku
       - "POSTGRES_PASSWORD=secretpassword"
     args:

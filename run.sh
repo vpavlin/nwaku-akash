@@ -51,6 +51,7 @@ fi
 RLN_RELAY_CRED_PATH=${RLN_RELAY_CRED_PATH:-/keystore/keystore.json}
 
 if [ -n "${RLN_RELAY_CRED_BASE64}" ]; then
+    mkdir -p `dirname ${RLN_RELAY_CRED_PATH}`
     echo ${RLN_RELAY_CRED_BASE64} | base64 -d > ${RLN_RELAY_CRED_PATH}
 fi
 
