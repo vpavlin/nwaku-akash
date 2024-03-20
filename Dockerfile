@@ -1,4 +1,4 @@
-FROM statusteam/nim-waku:v0.19.0
+FROM harbor.status.im/wakuorg/nwaku:v0.26.0
 
 RUN apk add --no-cache certbot
 

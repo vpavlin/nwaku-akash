@@ -57,13 +57,10 @@ services:
       - --relay=true
       - --filter=true
       - --lightpush=true
-      - --pubsub-topic=/waku/2/default-waku/proto
-      - --pubsub-topic=/waku/2/dev-waku/proto
+      - --cluster-id=1
       - --keep-alive=true
       - --peer-exchange=true
       - --max-connections=300
-      - --dns-discovery=true
-      - --dns-discovery-url=enrtree://ANEDLO25QVUGJOUTQFRYKWX6P4Z4GKVESBMHML7DZ6YK4LGS5FC5O@prod.wakuv2.nodes.status.im
       - --discv5-discovery=true
       - --discv5-udp-port=9005
       - --discv5-enr-auto-update=True
@@ -72,8 +69,7 @@ services:
       - --metrics-server-port=8003
       - --metrics-server-address=0.0.0.0
       - --store=true
-      - --store-message-retention-policy=time:2592000
-
+      - --store-message-retention-policy=size:3GB
   postgres:
     image: postgres 
     expose:
