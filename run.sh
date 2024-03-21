@@ -67,5 +67,5 @@ exec "/usr/bin/wakunode" $@ ${DNS_WSS_CMD}\
     ${RLN_RELAY_CRED_PATH}\
     ${RLN_RELAY_CRED_PASSWORD}\
     --rln-relay-eth-client-address="${ETH_CLIENT_ADDRESS}"\
-    --rln-relay-tree-path="/etc/rln_tree"\
+    --rln-relay-tree-path="/etc/letsencrypt/rln_tree"\
     --nat=extip:${IP_ADDR}
