@@ -1,4 +1,4 @@
-FROM harbor.status.im/wakuorg/nwaku:v0.26.0
+FROM wakuorg/nwaku:v0.26.0
 
 RUN apk add --no-cache certbot
 

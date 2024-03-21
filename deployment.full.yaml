@@ -7,7 +7,7 @@ endpoints:
 
 services:
   node:
-    image: quay.io/vpavlin0/wakash:8352f0e
+    image: quay.io/vpavlin0/wakash:d49a17b
     expose:
       - port: 60000
         as: 60000
@@ -46,20 +46,21 @@ services:
         certs:
           mount: /etc/letsencrypt
     env:
+#Mandatory
+      - ETH_CLIENT_ADDRESS=
+#Optional
       - DOMAIN=
       - NODEKEY=
-      - IP_ADDR=
+      - RLN_RELAY_CRED_BASE64=
+      - RLN_RELAY_CRED_PASSWORD=
     args:
       - --relay=true
       - --filter=true
       - --lightpush=true
-      - --pubsub-topic=/waku/2/default-waku/proto
-      - --pubsub-topic=/waku/2/dev-waku/proto
       - --keep-alive=true
+      - --cluster-id=1
       - --peer-exchange=true
       - --max-connections=300
-      - --dns-discovery=true
-      - --dns-discovery-url=enrtree://ANEDLO25QVUGJOUTQFRYKWX6P4Z4GKVESBMHML7DZ6YK4LGS5FC5O@prod.wakuv2.nodes.status.im
       - --discv5-discovery=true
       - --discv5-udp-port=9005
       - --discv5-enr-auto-update=True
@@ -68,7 +69,7 @@ services:
       - --metrics-server-port=8003
       - --metrics-server-address=0.0.0.0
       - --store=true
-      - --store-message-retention-policy=time:2592000
+      - --store-message-retention-policy=size:3GB
 
 profiles:
   compute:

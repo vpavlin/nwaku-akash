@@ -4,19 +4,13 @@ This repository show how to run a [waku node](https://github.com/waku-org/nwaku)
 
 You can find multiple different deplyoment manifests in this repository - they all deploy a Waku node, but with different set of features enabled and thus different requirements and cost.
 
-# Minimal (`deployment.minimal.yaml`)
+You can use [CLI](https://docs.akash.network/guides/cli) or [Cloudmos](https://docs.akash.network/guides/cloudmos-deploy) for deployment.
 
-This is a minimal useful deployment of a Waku node. It only enables the `relay` protocol, which is a backbone of the whole peer-to-peer network. You can use [CLI](https://docs.akash.network/guides/cli) or [Cloudmos](https://docs.akash.network/guides/cloudmos-deploy) for deployment 
+# Getting Started
 
-You may notice one line in the [YAML file](./deployment.minimal.yaml) is commented out 
+Since introduction of Rate-Limiting Nullifiers (RLN) into The Waku Network, the `nwaku` node needs to verify membership of message publishers. For that it needs a Sepolia RPC Node. You need to provide the URL for such node in `ETH_CLIENT_ADDRESS` in the deployment YAML.
 
-```
-#- --nat:extip:${MY_IP}
-``` 
-
-This is because we do not know our public IP address up front, so once the first deployment is done (i.e. you request a lease, accept a bid and the deployment succeeds), you'll need to get the IP (CLI: https://docs.akash.network/features/ip-leases/ip-leases-verification, or from Cloudmos web UI) and replace `{MY_IP}` with the actual value and update your deployment.
-
-After it restarts, you can verify you can connect to your node using the `wakucanary` tools.
+If you also plan to use the node to publish messages, you will need to obtain the membership yourself. For that you can use a helper script in [nwaku-compose](https://github.com/waku-org/nwaku-compose/blob/master/register_rln.sh) which allows you to register the membership and produces `keystore.json` file. You will need to encode the content of this file with `base64` encoding and pass it into the deployment fail as `RLN_RELAY_CRED_BASE64`.
 
 # Full (`deployment.full.yaml`)
 

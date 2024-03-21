@@ -53,9 +53,11 @@ RLN_RELAY_CRED_PATH=${RLN_RELAY_CRED_PATH:-/keystore/keystore.json}
 if [ -n "${RLN_RELAY_CRED_BASE64}" ]; then
     mkdir -p `dirname ${RLN_RELAY_CRED_PATH}`
     echo ${RLN_RELAY_CRED_BASE64} | base64 -d > ${RLN_RELAY_CRED_PATH}
-fi
 
-RLN_RELAY_CRED_PATH=--rln-relay-cred-path=${RLN_RELAY_CRED_PATH}
+    if [ -n "${RLN_RELAY_CRED_PATH}" ]; then
+        RLN_RELAY_CRED_ARG=--rln-relay-cred-path=${RLN_RELAY_CRED_PATH}
+    fi
+fi
 
 if [ -n "${RLN_RELAY_CRED_PASSWORD}" ]; then
     RLN_RELAY_CRED_PASSWORD=--rln-relay-cred-password="${RLN_RELAY_CRED_PASSWORD}"
@@ -64,7 +66,7 @@ fi
 exec "/usr/bin/wakunode" $@ ${DNS_WSS_CMD}\
     ${STORE_DB_URL}\
     ${NODEKEY}\
-    ${RLN_RELAY_CRED_PATH}\
+    ${RLN_RELAY_CRED_ARG}\
     ${RLN_RELAY_CRED_PASSWORD}\
     --rln-relay-eth-client-address="${ETH_CLIENT_ADDRESS}"\
     --rln-relay-tree-path="/etc/letsencrypt/rln_tree"\
