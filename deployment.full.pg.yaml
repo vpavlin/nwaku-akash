@@ -7,7 +7,7 @@
 
   services:
     node:
-      image: quay.io/vpavlin0/wakash:7f49b9a
+      image: quay.io/vpavlin0/wakash:8beb904
       depends_on:
         - postgres
       expose:

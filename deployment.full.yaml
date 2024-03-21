@@ -7,7 +7,7 @@ endpoints:
 
 services:
   node:
-    image: quay.io/vpavlin0/wakash:d49a17b
+    image: quay.io/vpavlin0/wakash:8beb904
     expose:
       - port: 60000
         as: 60000
